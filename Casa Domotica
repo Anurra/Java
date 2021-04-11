@@ -1,0 +1,134 @@
+package main;
+
+
+public class Altavoz extends Dispositivo implements Modificable {
+    
+    private final static int MODIFICADOR_VOLUMEN= 1; //Creo una constante para los métodos de interfaces
+    //Atributos
+    private boolean reproducciendo;
+    private String canciones[];
+    private int numeroCanciones;
+    private int volumenAltavoz;
+    
+    //Creo la variable cancionActual para realizar los métodos siguiente, anterior y aleatoria
+    //para conocer en que canción se encuentra mi array de canciones
+    private int cancionActual;
+    
+    //Constructor sin parámetros
+    public Altavoz() {
+        super();//llamar al padre
+        this.reproducciendo = false;
+        this.canciones = null;
+        this.numeroCanciones = 0;
+        this.volumenAltavoz = 0;
+    }
+    
+    //Constructor con parámetros
+    public Altavoz(boolean reproducciendo, String[] canciones, int numeroCanciones, int volumenAltavoz) {
+        super();
+        this.reproducciendo = reproducciendo;
+        this.canciones = canciones;
+        this.numeroCanciones = numeroCanciones;
+        this.setVolumenAltavoz(volumenAltavoz);
+    }
+    
+    //Constructor con parámetros del padre
+    public Altavoz(boolean reproducciendo, String[] canciones, int numeroCanciones, int volumenAltavoz, String nombreDispositivo) {
+        super("Altavoz", nombreDispositivo);
+        this.reproducciendo = reproducciendo;
+        this.canciones = canciones;
+        this.numeroCanciones = numeroCanciones;
+        this.setVolumenAltavoz(volumenAltavoz);
+    }
+
+    //Getters y setters
+    public boolean isReproducciendo() {
+        return reproducciendo;
+    }
+
+    public void setReproducciendo(boolean reproducciendo) {
+        this.reproducciendo = reproducciendo;
+    }
+
+    public String[] getCanciones() {
+        return canciones;
+    }
+
+    public void setCanciones(String[] canciones) {
+        this.canciones = canciones;
+    }
+
+    public int getNumeroCanciones() {
+        return numeroCanciones;
+    }
+
+    public void setNumeroCanciones(int numeroCanciones) {
+        this.numeroCanciones = numeroCanciones;
+    }
+
+    public int getVolumenAltavoz() {
+        return volumenAltavoz;
+    }
+
+    public void setVolumenAltavoz(int volumenAltavoz) {
+        if (volumenAltavoz >= 0 && volumenAltavoz <= 100) {
+            this.volumenAltavoz = volumenAltavoz;
+        } else if (volumenAltavoz > 100) { //Si el valor es mayor de 100, se queda 100
+            this.volumenAltavoz = 100;
+        }else{//Si el valor es menor de 0, se queda 0
+            this.volumenAltavoz = 0;
+        }
+    }
+    
+    //to string
+    @Override
+    public String toString() {
+        String txtCanciones = "";
+    for(int i = 0; i < canciones.length; i++) {
+      txtCanciones = txtCanciones + this.canciones[i] + " ";
+    }
+   
+        return super.toString() + "El altavoz esta reproducciendo " + reproducciendo + ", la canciones " + txtCanciones + ", que son " + numeroCanciones + "y el volumen está a " + volumenAltavoz;
+    }//to.String del padre
+    
+    
+    //Métodos de la clase
+    public void reproducir(){
+        this.reproducciendo = true;
+    }
+    
+    public void parar(){
+        this.reproducciendo = false;
+    }
+    
+    public void siguiente(){
+    this.cancionActual++;
+    if(this.cancionActual > canciones.length-1){
+    this.cancionActual = 0;
+    }
+    }
+    
+    public void anterior(){
+    this.cancionActual--;
+    if(this.cancionActual < 0){
+    this.cancionActual = canciones.length -1;
+    }
+    }
+    
+    public void aleatoria(){
+    this.cancionActual = (int)(Math.random()*this.canciones.length); //número aleatorio entre 0 y n
+    }
+    
+    
+    //Métodos interfaces
+    @Override
+    public void subir() {
+        this.setVolumenAltavoz(this.volumenAltavoz+MODIFICADOR_VOLUMEN);
+    }
+
+    @Override
+    public void bajar() {
+        this.setVolumenAltavoz(this.volumenAltavoz-MODIFICADOR_VOLUMEN);
+    }
+    
+}
